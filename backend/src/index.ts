@@ -1,10 +1,18 @@
-import fastify from 'fastify';
+import fastify, { type FastifyInstance } from 'fastify';
+import configuration, {
+    ApplicationConfig,
+} from './configuration/configuration';
 
-const server = fastify({ logger: true });
+const server: FastifyInstance = fastify({ logger: true });
+const applicationConfig: ApplicationConfig = configuration().application;
 
-try {
-    await server.listen({ port: 3000 });
-} catch (error) {
-    console.error('An error ', error);
-    process.exit(1);
-}
+const bootstrap = async () => {
+    try {
+        await server.listen({ port: applicationConfig.port });
+    } catch (error) {
+        console.error('Failed to start fastify server:', error);
+        process.exit(1);
+    }
+};
+
+bootstrap();
