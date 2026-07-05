@@ -2,9 +2,12 @@ import fastify, { type FastifyInstance } from 'fastify';
 import configuration, {
     ApplicationConfig,
 } from './configuration/configuration';
+import { CloudflareRoutes } from './routes/cloudflare';
 
 const server: FastifyInstance = fastify({ logger: true });
 const applicationConfig: ApplicationConfig = configuration().application;
+
+server.register(CloudflareRoutes, { prefix: '/cloudflare' });
 
 const bootstrap = async () => {
     try {

@@ -5,27 +5,27 @@ dotenv.config();
 export default (): Configuration => ({
     application: {
         port: parseInt(process.env.PORT) ?? 3000,
-        test: '',
     },
-    aws: {
-        accessKey: process.env.AWS_ACCESS_KEY,
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-        region: process.env.AWS_REGION,
+    cloudflare: {
+        accountId: process.env.CLOUDFLARE_ACCOUNT_ID,
+        apiToken: process.env.CLOUDFLARE_API_TOKEN,
+        apiUrl: 'https://api.cloudflare.com/client',
+        apiVersion: 'v4',
     },
 });
 
 interface Configuration {
     application: ApplicationConfig;
-    aws: AwsConfig;
+    cloudflare: CloudflareConfig;
 }
 
 export interface ApplicationConfig {
     port: number;
-    test: string;
 }
 
-export interface AwsConfig {
-    accessKey: string;
-    secretAccessKey: string;
-    region: string;
+export interface CloudflareConfig {
+    accountId: string;
+    apiToken: string;
+    apiUrl: string;
+    apiVersion: string;
 }
