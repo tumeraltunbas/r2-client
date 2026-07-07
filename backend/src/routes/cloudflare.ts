@@ -1,10 +1,6 @@
-import {
-    FastifyInstance,
-    FastifyPluginAsync,
-    FastifyReply,
-    FastifyRequest,
-} from 'fastify';
+import { FastifyInstance, FastifyPluginAsync, FastifyRequest } from 'fastify';
 import { CloudflareController } from '../controllers/cloudflare';
+import { ListBucketsResDto } from '../models/dtos/project/cloudflare';
 
 export const CloudflareRoutes: FastifyPluginAsync = async (
     fastify: FastifyInstance,
@@ -13,9 +9,7 @@ export const CloudflareRoutes: FastifyPluginAsync = async (
 
     fastify.get(
         '/buckets',
-        async (request: FastifyRequest, reply: FastifyReply) => {
-            const response = await cloudflareController.listBuckets(request);
-            reply.send({ success: true, data: response });
-        },
+        async (request: FastifyRequest): Promise<ListBucketsResDto> =>
+            cloudflareController.listBuckets(request),
     );
 };
