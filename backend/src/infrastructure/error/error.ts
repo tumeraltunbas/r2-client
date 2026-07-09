@@ -17,3 +17,13 @@ export class BusinessRuleError extends ProcessFailureError {
         this.message = ERROR_MESSAGES[code];
     }
 }
+
+export class ValidationError extends ProcessFailureError {
+    messages: string[];
+
+    constructor(messages: string[]) {
+        super();
+        this.code = ERROR_CODES.VALIDATION_ERROR;
+        this.messages = messages;
+    }
+}

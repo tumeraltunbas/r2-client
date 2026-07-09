@@ -4,3 +4,7 @@ export class ListBucketsResDto {
         creationDate: string;
     }[];
 }
+
+export class CreateBucketResDto {
+    name: string;
+}

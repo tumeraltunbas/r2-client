@@ -2,7 +2,7 @@ import fastify, { type FastifyInstance } from 'fastify';
 import configuration, {
     ApplicationConfig,
 } from './configuration/configuration';
-import { CloudflareRoutes } from './routes/cloudflare';
+import { CloudflareRoutes } from './routes/cloudflare.route';
 import { errorHandler } from './infrastructure/error/error-handler';
 import { PINO_LOGGER_CONFIGURATION } from './constants/pino';
 

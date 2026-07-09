@@ -29,3 +29,15 @@ export class GetBucketResponse {
     name: string;
     storage_class: string;
 }
+
+export class CreateBucketResponse {
+    creation_date: string;
+    jurisdiction: string;
+    location: string;
+    name: string;
+    storage_class: string;
+}
+
+export class CreateBucketRequest {
+    name: string;
+}

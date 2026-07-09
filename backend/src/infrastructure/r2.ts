@@ -1,7 +1,7 @@
 import configuration, {
     CloudflareConfig,
 } from '../configuration/configuration';
-import { HTTP_HEADERS, HTTP_METHODS } from '../constants/enums';
+import { CONTENT_TYPES, HTTP_HEADERS, HTTP_METHODS } from '../constants/enums';
 import { buildCloudflareRequestUrl } from '../utils/str';
 
 export class R2Client {
@@ -16,7 +16,7 @@ export class R2Client {
             method,
             headers: {
                 [HTTP_HEADERS.AUTHORIZATION]: `Bearer ${cloudflareConfig.apiToken}`,
-                'Content-Type': 'application/json',
+                [HTTP_HEADERS.CONTENT_TYPE]: CONTENT_TYPES.APPLICATION_JSON,
             },
         };
 
@@ -33,7 +33,6 @@ export class R2Client {
         );
 
         const response = await fetch(url, fetchOptions);
-
         return await response.json();
     }
 }

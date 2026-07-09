@@ -1,6 +1,6 @@
 import { HTTP_METHODS } from './enums';
 
-export const CloudflareR2Endpoints = {
+export const CLOUDFLARE_R2_ENDPOINTS = {
     bucket: {
         list: {
             method: HTTP_METHODS.GET,
