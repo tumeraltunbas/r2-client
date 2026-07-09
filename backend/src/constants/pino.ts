@@ -1,5 +1,3 @@
-import { FastifyLoggerOptions } from 'fastify';
-
 export const PINO_LOGGER_CONFIGURATION = {
     transport: {
         target: 'pino-pretty',
