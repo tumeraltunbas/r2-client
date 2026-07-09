@@ -9,7 +9,10 @@ import {
 } from '../models/dtos/project/res/cloudflare';
 import { CloudflareRequestClient } from '../request-clients/cloudflare.request-client';
 import { ProcessFailureError } from '../infrastructure/error/error';
-import { CreateBucketReqDto } from '../models/dtos/project/req/cloudflare';
+import {
+    CreateBucketReqDto,
+    RemoveBucketReqDto,
+} from '../models/dtos/project/req/cloudflare';
 
 export class CloudflareService {
     private readonly cloudflareRequestClient: CloudflareRequestClient;
@@ -47,7 +50,7 @@ export class CloudflareService {
     ): Promise<CreateBucketResDto> {
         const { body } = request;
 
-        const trimmedBucketName: string = body.bucketName.trim();
+        const trimmedBucketName: string = body.name.trim();
         let createBucketResponse: CreateBucketResponse = null;
 
         try {
@@ -68,5 +71,25 @@ export class CloudflareService {
         };
 
         return createBucketResDto;
+    }
+
+    async deleteBucket(
+        request: FastifyRequest<{ Params: RemoveBucketReqDto }>,
+    ): Promise<void> {
+        const { params } = request;
+
+        const trimmedBucketName: string = params.name.trim();
+
+        try {
+            await this.cloudflareRequestClient.deleteBucket(trimmedBucketName);
+        } catch (error) {
+            request.log.error(
+                { error },
+                'Cloudflare service - deleteBucket - deleteBucket',
+            );
+            throw new ProcessFailureError();
+        }
+
+        return undefined;
     }
 }

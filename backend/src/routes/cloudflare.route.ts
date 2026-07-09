@@ -5,7 +5,10 @@ import {
     ListBucketsResDto,
 } from '../models/dtos/project/res/cloudflare';
 import { APP_ROUTES } from '../constants/routes';
-import { CreateBucketReqDto } from '../models/dtos/project/req/cloudflare';
+import {
+    CreateBucketReqDto,
+    RemoveBucketReqDto,
+} from '../models/dtos/project/req/cloudflare';
 
 export const CloudflareRoutes: FastifyPluginAsync = async (
     fastify: FastifyInstance,
@@ -25,5 +28,15 @@ export const CloudflareRoutes: FastifyPluginAsync = async (
             request: FastifyRequest<{ Body: CreateBucketReqDto }>,
         ): Promise<CreateBucketResDto> =>
             cloudflareController.createBucket(request),
+    );
+
+    fastify.delete(
+        APP_ROUTES.cloudflare.deleteBucket.endpoint,
+        {
+            schema: APP_ROUTES.cloudflare.deleteBucket.requestDtoSchema,
+        },
+        async (
+            request: FastifyRequest<{ Params: RemoveBucketReqDto }>,
+        ): Promise<void> => cloudflareController.deleteBucket(request),
     );
 };

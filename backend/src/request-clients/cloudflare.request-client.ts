@@ -6,6 +6,7 @@ import { R2Client } from '../infrastructure/r2';
 import {
     CreateBucketRequest,
     CreateBucketResponse,
+    DeleteBucketResponse,
     ListBucketsResponse,
     R2Response,
 } from '../models/dtos/cloudflare/r2';
@@ -49,6 +50,24 @@ export class CloudflareRequestClient {
 
         const response: R2Response<CreateBucketResponse> =
             await this.r2Client.request(endpoint, method, body);
+
+        if (!response.success) {
+            throw response.errors;
+        }
+
+        return response.result;
+    }
+
+    async deleteBucket(bucketName: string): Promise<DeleteBucketResponse> {
+        const deleteBucketInfo = CLOUDFLARE_R2_ENDPOINTS.bucket.delete;
+        const method = deleteBucketInfo.method;
+        const endpoint = deleteBucketInfo.endpoint(
+            this.cloudflareConfig.accountId,
+            bucketName,
+        );
+
+        const response: R2Response<DeleteBucketResponse> =
+            await this.r2Client.request(endpoint, method);
 
         if (!response.success) {
             throw response.errors;

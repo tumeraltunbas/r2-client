@@ -1,3 +1,7 @@
 export class CreateBucketReqDto {
-    bucketName: string;
+    name: string;
+}
+
+export class RemoveBucketReqDto {
+    name: string;
 }

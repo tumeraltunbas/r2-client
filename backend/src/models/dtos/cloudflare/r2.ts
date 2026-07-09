@@ -41,3 +41,5 @@ export class CreateBucketResponse {
 export class CreateBucketRequest {
     name: string;
 }
+
+export class DeleteBucketResponse {}

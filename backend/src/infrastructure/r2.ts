@@ -8,7 +8,7 @@ export class R2Client {
     async request<T>(
         endpoint: string,
         method: HTTP_METHODS,
-        body?: any,
+        body?: unknown,
     ): Promise<T> {
         const cloudflareConfig: CloudflareConfig = configuration().cloudflare;
 
@@ -23,7 +23,7 @@ export class R2Client {
         const httpMethodsWithoutBody = [HTTP_METHODS.GET, HTTP_METHODS.DELETE];
 
         if (body && !httpMethodsWithoutBody.includes(method)) {
-            fetchOptions.body = body;
+            fetchOptions.body = JSON.stringify(body);
         }
 
         const url = buildCloudflareRequestUrl(

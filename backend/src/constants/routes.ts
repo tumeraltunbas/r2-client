@@ -11,12 +11,27 @@ export const APP_ROUTES = {
                 body: {
                     type: JAVASCRIPT_DATA_TYPES.OBJECT,
                     properties: {
-                        bucketName: {
+                        name: {
                             type: JAVASCRIPT_DATA_TYPES.STRING,
                             minLength: 1,
                         },
                     },
-                    required: ['bucketName'],
+                    required: ['name'],
+                },
+            },
+        },
+        deleteBucket: {
+            endpoint: '/buckets/:name',
+            requestDtoSchema: {
+                params: {
+                    type: JAVASCRIPT_DATA_TYPES.OBJECT,
+                    properties: {
+                        name: {
+                            type: JAVASCRIPT_DATA_TYPES.STRING,
+                            minLength: 1,
+                        },
+                    },
+                    required: ['name'],
                 },
             },
         },

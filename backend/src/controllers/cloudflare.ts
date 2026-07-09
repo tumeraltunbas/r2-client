@@ -4,7 +4,10 @@ import {
     CreateBucketResDto,
     ListBucketsResDto,
 } from '../models/dtos/project/res/cloudflare';
-import { CreateBucketReqDto } from '../models/dtos/project/req/cloudflare';
+import {
+    CreateBucketReqDto,
+    RemoveBucketReqDto,
+} from '../models/dtos/project/req/cloudflare';
 
 export class CloudflareController {
     private readonly cloudflareService: CloudflareService;
@@ -21,5 +24,11 @@ export class CloudflareController {
         request: FastifyRequest<{ Body: CreateBucketReqDto }>,
     ): Promise<CreateBucketResDto> {
         return this.cloudflareService.createBucket(request);
+    }
+
+    async deleteBucket(
+        request: FastifyRequest<{ Params: RemoveBucketReqDto }>,
+    ): Promise<void> {
+        return this.cloudflareService.deleteBucket(request);
     }
 }
