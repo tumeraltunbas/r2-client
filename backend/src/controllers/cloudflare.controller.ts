@@ -3,9 +3,11 @@ import { CloudflareService } from '../services/cloudflare.service';
 import {
     CreateBucketResDto,
     ListBucketsResDto,
+    ListObjectsResDto,
 } from '../models/dtos/project/res/cloudflare';
 import {
     CreateBucketReqDto,
+    ListObjectsReqDto,
     RemoveBucketReqDto,
 } from '../models/dtos/project/req/cloudflare';
 
@@ -30,5 +32,11 @@ export class CloudflareController {
         request: FastifyRequest<{ Params: RemoveBucketReqDto }>,
     ): Promise<void> {
         return this.cloudflareService.deleteBucket(request);
+    }
+
+    async listObjects(
+        request: FastifyRequest<{ Params: ListObjectsReqDto }>,
+    ): Promise<ListObjectsResDto> {
+        return this.cloudflareService.listObjects(request);
     }
 }

@@ -8,3 +8,11 @@ export class ListBucketsResDto {
 export class CreateBucketResDto {
     name: string;
 }
+
+export class ListObjectsResDto {
+    objects: {
+        key: string;
+        size: number;
+        lastModified: Date;
+    }[];
+}

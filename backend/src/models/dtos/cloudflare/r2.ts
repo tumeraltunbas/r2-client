@@ -43,3 +43,21 @@ export class CreateBucketRequest {
 }
 
 export class DeleteBucketResponse {}
+
+export class ListObjectsResponse {
+    custom_metadata: object;
+    etag: string;
+    http_metadata: {
+        cacheControl: string;
+        cacheExpiry: string;
+        contentDisposition: string;
+        contentEncoding: string;
+        contentLanguage: string;
+        contentType: string;
+    };
+    key: string;
+    last_modified: string;
+    size: number;
+    ssec: boolean;
+    storage_class: string;
+}

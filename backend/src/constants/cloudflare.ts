@@ -23,4 +23,11 @@ export const CLOUDFLARE_R2_ENDPOINTS = {
                 `accounts/${accountId}/r2/buckets/${bucketName}`,
         },
     },
+    object: {
+        list: {
+            method: HTTP_METHODS.GET,
+            endpoint: (accountId: string, bucketName: string): string =>
+                `accounts/${accountId}/r2/buckets/${bucketName}/objects`,
+        },
+    },
 } as const;

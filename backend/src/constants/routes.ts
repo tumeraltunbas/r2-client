@@ -35,5 +35,20 @@ export const APP_ROUTES = {
                 },
             },
         },
+        listObjects: {
+            endpoint: '/buckets/:name/objects',
+            requestDtoSchema: {
+                params: {
+                    type: JAVASCRIPT_DATA_TYPES.OBJECT,
+                    properties: {
+                        name: {
+                            type: JAVASCRIPT_DATA_TYPES.STRING,
+                            minLength: 1,
+                        },
+                    },
+                    required: ['name'],
+                },
+            },
+        },
     },
 } as const;

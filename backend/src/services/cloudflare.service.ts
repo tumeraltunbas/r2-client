@@ -2,15 +2,18 @@ import { FastifyRequest } from 'fastify';
 import {
     CreateBucketResponse,
     ListBucketsResponse,
+    ListObjectsResponse,
 } from '../models/dtos/cloudflare/r2';
 import {
     CreateBucketResDto,
     ListBucketsResDto,
+    ListObjectsResDto,
 } from '../models/dtos/project/res/cloudflare';
 import { CloudflareRequestClient } from '../request-clients/cloudflare.request-client';
 import { ProcessFailureError } from '../infrastructure/error/error';
 import {
     CreateBucketReqDto,
+    ListObjectsReqDto,
     RemoveBucketReqDto,
 } from '../models/dtos/project/req/cloudflare';
 
@@ -91,5 +94,38 @@ export class CloudflareService {
         }
 
         return undefined;
+    }
+
+    async listObjects(
+        request: FastifyRequest<{ Params: ListObjectsReqDto }>,
+    ): Promise<ListObjectsResDto> {
+        const { params } = request;
+
+        const trimmedBucketName: string = params.name.trim();
+
+        let listObjectsResponse: ListObjectsResponse[] = null;
+
+        try {
+            listObjectsResponse =
+                await this.cloudflareRequestClient.listObjects(
+                    trimmedBucketName,
+                );
+        } catch (error) {
+            request.log.error(
+                { error },
+                'Cloudflare service - listObjects - listObjects',
+            );
+            throw new ProcessFailureError();
+        }
+
+        const listObjectsResDto: ListObjectsResDto = {
+            objects: listObjectsResponse.map((o) => ({
+                key: o.key,
+                size: o.size,
+                lastModified: new Date(o.last_modified),
+            })),
+        };
+
+        return listObjectsResDto;
     }
 }

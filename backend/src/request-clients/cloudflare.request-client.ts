@@ -8,6 +8,7 @@ import {
     CreateBucketResponse,
     DeleteBucketResponse,
     ListBucketsResponse,
+    ListObjectsResponse,
     R2Response,
 } from '../models/dtos/cloudflare/r2';
 
@@ -67,6 +68,24 @@ export class CloudflareRequestClient {
         );
 
         const response: R2Response<DeleteBucketResponse> =
+            await this.r2Client.request(endpoint, method);
+
+        if (!response.success) {
+            throw response.errors;
+        }
+
+        return response.result;
+    }
+
+    async listObjects(bucketName: string): Promise<ListObjectsResponse[]> {
+        const listObjectsInfo = CLOUDFLARE_R2_ENDPOINTS.object.list;
+        const method = listObjectsInfo.method;
+        const endpoint = listObjectsInfo.endpoint(
+            this.cloudflareConfig.accountId,
+            bucketName,
+        );
+
+        const response: R2Response<ListObjectsResponse[]> =
             await this.r2Client.request(endpoint, method);
 
         if (!response.success) {

@@ -5,3 +5,7 @@ export class CreateBucketReqDto {
 export class RemoveBucketReqDto {
     name: string;
 }
+
+export class ListObjectsReqDto {
+    name: string;
+}
