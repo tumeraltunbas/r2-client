@@ -1,5 +1,5 @@
 import { FastifyInstance, FastifyPluginAsync, FastifyRequest } from 'fastify';
-import { CloudflareController } from '../controllers/cloudflare';
+import { CloudflareController } from '../controllers/cloudflare.controller';
 import {
     CreateBucketResDto,
     ListBucketsResDto,
