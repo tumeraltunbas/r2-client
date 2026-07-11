@@ -13,6 +13,7 @@ export enum HTTP_HEADERS {
 
 export enum CONTENT_TYPES {
     APPLICATION_JSON = 'application/json',
+    APPLICATION_OCTET_STREAM = 'application/octet-stream',
 }
 
 export enum HTTP_STATUS_CODES {

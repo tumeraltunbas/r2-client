@@ -11,6 +11,7 @@ import {
     DeleteObjectReqDto,
     ListObjectsReqDto,
     RemoveBucketReqDto,
+    UploadObjectReqDto,
 } from '../models/dtos/project/req/cloudflare';
 
 export const CloudflareRoutes: FastifyPluginAsync = async (
@@ -62,5 +63,15 @@ export const CloudflareRoutes: FastifyPluginAsync = async (
         async (
             request: FastifyRequest<{ Params: DeleteObjectReqDto }>,
         ): Promise<void> => cloudflareController.deleteObject(request),
+    );
+
+    fastify.post(
+        APP_ROUTES.cloudflare.uploadObject.endpoint,
+        {
+            schema: APP_ROUTES.cloudflare.uploadObject.requestDtoSchema,
+        },
+        async (
+            request: FastifyRequest<{ Params: UploadObjectReqDto }>,
+        ): Promise<void> => cloudflareController.uploadObject(request),
     );
 };

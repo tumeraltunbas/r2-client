@@ -2,6 +2,7 @@ import configuration, {
     CloudflareConfig,
 } from '../configuration/configuration';
 import { CLOUDFLARE_R2_ENDPOINTS } from '../constants/cloudflare';
+import { CONTENT_TYPES } from '../constants/enums';
 import { R2Client } from '../infrastructure/r2';
 import {
     CreateBucketRequest,
@@ -110,6 +111,33 @@ export class CloudflareRequestClient {
 
         const response: R2Response<DeleteObjectResponse> =
             await this.r2Client.request(endpoint, method);
+
+        if (!response.success) {
+            throw response.errors;
+        }
+
+        return undefined;
+    }
+
+    async uploadObject(
+        bucketName: string,
+        objectKey: string,
+        fileStream: unknown,
+    ): Promise<void> {
+        const uploadObjectInfo = CLOUDFLARE_R2_ENDPOINTS.object.upload;
+        const method = uploadObjectInfo.method;
+        const endpoint = uploadObjectInfo.endpoint(
+            this.cloudflareConfig.accountId,
+            bucketName,
+            objectKey,
+        );
+
+        const response: R2Response<void> = await this.r2Client.request(
+            endpoint,
+            method,
+            fileStream,
+            CONTENT_TYPES.APPLICATION_OCTET_STREAM,
+        );
 
         if (!response.success) {
             throw response.errors;

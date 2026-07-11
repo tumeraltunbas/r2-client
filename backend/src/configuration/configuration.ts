@@ -1,4 +1,5 @@
 import dotenv from 'dotenv';
+import { convertMegabytesToBytes } from '../utils/math';
 
 dotenv.config();
 
@@ -12,11 +13,17 @@ export default (): Configuration => ({
         apiUrl: 'https://api.cloudflare.com/client',
         apiVersion: 'v4',
     },
+    formData: {
+        maxFileSize: convertMegabytesToBytes(300),
+        maxFileCount: 1,
+        fieldName: 'file',
+    },
 });
 
 interface Configuration {
     application: ApplicationConfig;
     cloudflare: CloudflareConfig;
+    formData: FormDataConfig;
 }
 
 export interface ApplicationConfig {
@@ -28,4 +35,10 @@ export interface CloudflareConfig {
     apiToken: string;
     apiUrl: string;
     apiVersion: string;
+}
+
+export interface FormDataConfig {
+    maxFileSize: number;
+    maxFileCount: number;
+    fieldName: string;
 }

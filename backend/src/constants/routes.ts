@@ -1,5 +1,7 @@
 import { JAVASCRIPT_DATA_TYPES } from './enums';
 
+export const GLOBAL_PREFIX = '/cloudflare';
+
 export const APP_ROUTES = {
     cloudflare: {
         listBuckets: {
@@ -66,6 +68,21 @@ export const APP_ROUTES = {
                         },
                     },
                     required: ['name', 'key'],
+                },
+            },
+        },
+        uploadObject: {
+            endpoint: '/buckets/:name/objects',
+            requestDtoSchema: {
+                params: {
+                    type: JAVASCRIPT_DATA_TYPES.OBJECT,
+                    properties: {
+                        name: {
+                            type: JAVASCRIPT_DATA_TYPES.STRING,
+                            minLength: 1,
+                        },
+                    },
+                    required: ['name'],
                 },
             },
         },

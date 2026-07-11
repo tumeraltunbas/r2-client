@@ -10,6 +10,7 @@ import {
     DeleteObjectReqDto,
     ListObjectsReqDto,
     RemoveBucketReqDto,
+    UploadObjectReqDto,
 } from '../models/dtos/project/req/cloudflare';
 
 export class CloudflareController {
@@ -45,5 +46,11 @@ export class CloudflareController {
         request: FastifyRequest<{ Params: DeleteObjectReqDto }>,
     ): Promise<void> {
         return this.cloudflareService.deleteObject(request);
+    }
+
+    async uploadObject(
+        request: FastifyRequest<{ Params: UploadObjectReqDto }>,
+    ): Promise<void> {
+        return this.cloudflareService.uploadObject(request);
     }
 }

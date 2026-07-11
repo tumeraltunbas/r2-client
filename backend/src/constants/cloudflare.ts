@@ -38,5 +38,14 @@ export const CLOUDFLARE_R2_ENDPOINTS = {
             ): string =>
                 `accounts/${accountId}/r2/buckets/${bucketName}/objects/${objectKey}`,
         },
+        upload: {
+            method: HTTP_METHODS.PUT,
+            endpoint: (
+                accountId: string,
+                bucketName: string,
+                objectKey: string,
+            ): string =>
+                `accounts/${accountId}/r2/buckets/${bucketName}/objects/${objectKey}`,
+        },
     },
 } as const;

@@ -10,13 +10,20 @@ import {
     ListObjectsResDto,
 } from '../models/dtos/project/res/cloudflare';
 import { CloudflareRequestClient } from '../request-clients/cloudflare.request-client';
-import { ProcessFailureError } from '../infrastructure/error/error';
+import {
+    BusinessRuleError,
+    ProcessFailureError,
+} from '../infrastructure/error/error';
 import {
     CreateBucketReqDto,
     DeleteObjectReqDto,
     ListObjectsReqDto,
     RemoveBucketReqDto,
+    UploadObjectReqDto,
 } from '../models/dtos/project/req/cloudflare';
+import { MultipartFile } from '@fastify/multipart';
+import { ERROR_CODES } from '../constants/error';
+import configuration, { FormDataConfig } from '../configuration/configuration';
 
 export class CloudflareService {
     private readonly cloudflareRequestClient: CloudflareRequestClient;
@@ -147,6 +154,48 @@ export class CloudflareService {
             request.log.error(
                 { error },
                 'Cloudflare service - deleteObject - deleteObject',
+            );
+            throw new ProcessFailureError();
+        }
+
+        return undefined;
+    }
+
+    async uploadObject(
+        request: FastifyRequest<{ Params: UploadObjectReqDto }>,
+    ): Promise<void> {
+        const { params } = request;
+        const formDataConfig: FormDataConfig = configuration().formData;
+
+        let file: MultipartFile = null;
+
+        try {
+            file = await request.file();
+        } catch (error) {
+            request.log.error(
+                { error },
+                'Cloudflare service - uploadObject - uploadObject',
+            );
+            throw new ProcessFailureError();
+        }
+
+        if (!file || file.fieldname !== formDataConfig.fieldName) {
+            throw new BusinessRuleError(ERROR_CODES.FILE_NOT_FOUND);
+        }
+
+        const trimmedBucketName: string = params.name.trim();
+        const trimmedObjectKey: string = file.filename.trim();
+
+        try {
+            await this.cloudflareRequestClient.uploadObject(
+                trimmedBucketName,
+                trimmedObjectKey,
+                file.file,
+            );
+        } catch (error) {
+            request.log.error(
+                { error },
+                'Cloudflare service - uploadObject - uploadObject',
             );
             throw new ProcessFailureError();
         }

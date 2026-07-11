@@ -2,9 +2,9 @@ import fastify, { type FastifyInstance } from 'fastify';
 import configuration, {
     ApplicationConfig,
 } from './configuration/configuration';
-import { CloudflareRoutes } from './routes/cloudflare.route';
 import { errorHandler } from './infrastructure/error/error-handler';
 import { PINO_LOGGER_CONFIGURATION } from './constants/pino';
+import { registerFastifyPlugins } from './utils/fastify';
 
 const server: FastifyInstance = fastify({
     logger: {
@@ -13,7 +13,7 @@ const server: FastifyInstance = fastify({
 });
 const applicationConfig: ApplicationConfig = configuration().application;
 
-server.register(CloudflareRoutes, { prefix: '/cloudflare' });
+registerFastifyPlugins(server);
 server.setErrorHandler(errorHandler);
 
 const bootstrap = async () => {
