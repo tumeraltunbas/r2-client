@@ -13,6 +13,7 @@ import { CloudflareRequestClient } from '../request-clients/cloudflare.request-c
 import { ProcessFailureError } from '../infrastructure/error/error';
 import {
     CreateBucketReqDto,
+    DeleteObjectReqDto,
     ListObjectsReqDto,
     RemoveBucketReqDto,
 } from '../models/dtos/project/req/cloudflare';
@@ -127,5 +128,29 @@ export class CloudflareService {
         };
 
         return listObjectsResDto;
+    }
+
+    async deleteObject(
+        request: FastifyRequest<{ Params: DeleteObjectReqDto }>,
+    ): Promise<void> {
+        const { params } = request;
+
+        const trimmedBucketName: string = params.name.trim();
+        const trimmedObjectKey: string = params.key.trim();
+
+        try {
+            await this.cloudflareRequestClient.deleteObject(
+                trimmedBucketName,
+                trimmedObjectKey,
+            );
+        } catch (error) {
+            request.log.error(
+                { error },
+                'Cloudflare service - deleteObject - deleteObject',
+            );
+            throw new ProcessFailureError();
+        }
+
+        return undefined;
     }
 }

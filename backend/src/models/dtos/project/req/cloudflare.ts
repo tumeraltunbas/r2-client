@@ -9,3 +9,8 @@ export class RemoveBucketReqDto {
 export class ListObjectsReqDto {
     name: string;
 }
+
+export class DeleteObjectReqDto {
+    name: string;
+    key: string;
+}

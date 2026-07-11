@@ -7,6 +7,7 @@ import {
     CreateBucketRequest,
     CreateBucketResponse,
     DeleteBucketResponse,
+    DeleteObjectResponse,
     ListBucketsResponse,
     ListObjectsResponse,
     R2Response,
@@ -93,5 +94,27 @@ export class CloudflareRequestClient {
         }
 
         return response.result;
+    }
+
+    async deleteObject(
+        bucketName: string,
+        objectKey: string,
+    ): Promise<DeleteObjectResponse> {
+        const deleteObjectInfo = CLOUDFLARE_R2_ENDPOINTS.object.delete;
+        const method = deleteObjectInfo.method;
+        const endpoint = deleteObjectInfo.endpoint(
+            this.cloudflareConfig.accountId,
+            bucketName,
+            objectKey,
+        );
+
+        const response: R2Response<DeleteObjectResponse> =
+            await this.r2Client.request(endpoint, method);
+
+        if (!response.success) {
+            throw response.errors;
+        }
+
+        return undefined;
     }
 }

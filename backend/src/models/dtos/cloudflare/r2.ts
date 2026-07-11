@@ -61,3 +61,7 @@ export class ListObjectsResponse {
     ssec: boolean;
     storage_class: string;
 }
+
+export class DeleteObjectResponse {
+    key: string;
+}

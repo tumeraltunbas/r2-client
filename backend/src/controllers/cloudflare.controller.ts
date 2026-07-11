@@ -7,6 +7,7 @@ import {
 } from '../models/dtos/project/res/cloudflare';
 import {
     CreateBucketReqDto,
+    DeleteObjectReqDto,
     ListObjectsReqDto,
     RemoveBucketReqDto,
 } from '../models/dtos/project/req/cloudflare';
@@ -38,5 +39,11 @@ export class CloudflareController {
         request: FastifyRequest<{ Params: ListObjectsReqDto }>,
     ): Promise<ListObjectsResDto> {
         return this.cloudflareService.listObjects(request);
+    }
+
+    async deleteObject(
+        request: FastifyRequest<{ Params: DeleteObjectReqDto }>,
+    ): Promise<void> {
+        return this.cloudflareService.deleteObject(request);
     }
 }
