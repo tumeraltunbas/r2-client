@@ -10,6 +10,9 @@ const server: FastifyInstance = fastify({
     logger: {
         ...PINO_LOGGER_CONFIGURATION,
     },
+    ajv: {
+        plugins: [[require('ajv-keywords'), ['transform']]],
+    },
 });
 const applicationConfig: ApplicationConfig = configuration().application;
 

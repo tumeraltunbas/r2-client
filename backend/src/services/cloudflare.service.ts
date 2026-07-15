@@ -64,14 +64,11 @@ export class CloudflareService {
     ): Promise<CreateBucketResDto> {
         const { body } = request;
 
-        const trimmedBucketName: string = body.name.trim();
         let createBucketResponse: CreateBucketResponse = null;
 
         try {
             createBucketResponse =
-                await this.cloudflareRequestClient.createBucket(
-                    trimmedBucketName,
-                );
+                await this.cloudflareRequestClient.createBucket(body.name);
         } catch (error) {
             request.log.error(
                 { error },
@@ -92,10 +89,8 @@ export class CloudflareService {
     ): Promise<void> {
         const { params } = request;
 
-        const trimmedBucketName: string = params.name.trim();
-
         try {
-            await this.cloudflareRequestClient.deleteBucket(trimmedBucketName);
+            await this.cloudflareRequestClient.deleteBucket(params.name);
         } catch (error) {
             request.log.error(
                 { error },
@@ -112,15 +107,11 @@ export class CloudflareService {
     ): Promise<ListObjectsResDto> {
         const { params } = request;
 
-        const trimmedBucketName: string = params.name.trim();
-
         let listObjectsResponse: ListObjectsResponse[] = null;
 
         try {
             listObjectsResponse =
-                await this.cloudflareRequestClient.listObjects(
-                    trimmedBucketName,
-                );
+                await this.cloudflareRequestClient.listObjects(params.name);
         } catch (error) {
             request.log.error(
                 { error },
@@ -145,13 +136,10 @@ export class CloudflareService {
     ): Promise<void> {
         const { params } = request;
 
-        const trimmedBucketName: string = params.name.trim();
-        const trimmedObjectKey: string = params.key.trim();
-
         try {
             await this.cloudflareRequestClient.deleteObject(
-                trimmedBucketName,
-                trimmedObjectKey,
+                params.name,
+                params.key,
             );
         } catch (error) {
             request.log.error(
@@ -186,12 +174,11 @@ export class CloudflareService {
             throw new BusinessRuleError(ERROR_CODES.FILE_NOT_FOUND);
         }
 
-        const trimmedBucketName: string = params.name.trim();
         const trimmedObjectKey: string = file.filename.trim();
 
         try {
             await this.cloudflareRequestClient.uploadObject(
-                trimmedBucketName,
+                params.name,
                 trimmedObjectKey,
                 file.file,
             );
@@ -211,15 +198,12 @@ export class CloudflareService {
     ): Promise<GetObjectResDto> {
         const { params } = request;
 
-        const trimmedBucketName: string = params.name.trim();
-        const trimmedObjectKey: string = params.key.trim();
-
         let getObjectResponse: GetObjectResponse = null;
 
         try {
             getObjectResponse = await this.cloudflareRequestClient.getObject(
-                trimmedBucketName,
-                trimmedObjectKey,
+                params.name,
+                params.key,
             );
         } catch (error) {
             request.log.error(

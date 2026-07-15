@@ -15,6 +15,7 @@ export const APP_ROUTES = {
                     properties: {
                         name: {
                             type: JAVASCRIPT_DATA_TYPES.STRING,
+                            transform: ['trim'],
                             minLength: 1,
                         },
                     },
@@ -30,6 +31,7 @@ export const APP_ROUTES = {
                     properties: {
                         name: {
                             type: JAVASCRIPT_DATA_TYPES.STRING,
+                            transform: ['trim'],
                             minLength: 1,
                         },
                     },
@@ -45,6 +47,7 @@ export const APP_ROUTES = {
                     properties: {
                         name: {
                             type: JAVASCRIPT_DATA_TYPES.STRING,
+                            transform: ['trim'],
                             minLength: 1,
                         },
                     },
@@ -60,10 +63,12 @@ export const APP_ROUTES = {
                     properties: {
                         name: {
                             type: JAVASCRIPT_DATA_TYPES.STRING,
+                            transform: ['trim'],
                             minLength: 1,
                         },
                         key: {
                             type: JAVASCRIPT_DATA_TYPES.STRING,
+                            transform: ['trim'],
                             minLength: 1,
                         },
                     },
@@ -79,6 +84,7 @@ export const APP_ROUTES = {
                     properties: {
                         name: {
                             type: JAVASCRIPT_DATA_TYPES.STRING,
+                            transform: ['trim'],
                             minLength: 1,
                         },
                     },
@@ -94,10 +100,12 @@ export const APP_ROUTES = {
                     properties: {
                         name: {
                             type: JAVASCRIPT_DATA_TYPES.STRING,
+                            transform: ['trim'],
                             minLength: 1,
                         },
                         key: {
                             type: JAVASCRIPT_DATA_TYPES.STRING,
+                            transform: ['trim'],
                             minLength: 1,
                         },
                     },
