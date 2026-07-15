@@ -2,12 +2,14 @@ import { FastifyRequest } from 'fastify';
 import { CloudflareService } from '../services/cloudflare.service';
 import {
     CreateBucketResDto,
+    GetObjectResDto,
     ListBucketsResDto,
     ListObjectsResDto,
 } from '../models/dtos/project/res/cloudflare';
 import {
     CreateBucketReqDto,
     DeleteObjectReqDto,
+    GetObjectReqDto,
     ListObjectsReqDto,
     RemoveBucketReqDto,
     UploadObjectReqDto,
@@ -52,5 +54,11 @@ export class CloudflareController {
         request: FastifyRequest<{ Params: UploadObjectReqDto }>,
     ): Promise<void> {
         return this.cloudflareService.uploadObject(request);
+    }
+
+    async getObject(
+        request: FastifyRequest<{ Params: GetObjectReqDto }>,
+    ): Promise<GetObjectResDto> {
+        return this.cloudflareService.getObject(request);
     }
 }

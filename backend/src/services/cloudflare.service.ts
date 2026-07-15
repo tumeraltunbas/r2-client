@@ -1,11 +1,13 @@
 import { FastifyRequest } from 'fastify';
 import {
     CreateBucketResponse,
+    GetObjectResponse,
     ListBucketsResponse,
     ListObjectsResponse,
 } from '../models/dtos/cloudflare/r2';
 import {
     CreateBucketResDto,
+    GetObjectResDto,
     ListBucketsResDto,
     ListObjectsResDto,
 } from '../models/dtos/project/res/cloudflare';
@@ -17,6 +19,7 @@ import {
 import {
     CreateBucketReqDto,
     DeleteObjectReqDto,
+    GetObjectReqDto,
     ListObjectsReqDto,
     RemoveBucketReqDto,
     UploadObjectReqDto,
@@ -201,5 +204,36 @@ export class CloudflareService {
         }
 
         return undefined;
+    }
+
+    async getObject(
+        request: FastifyRequest<{ Params: GetObjectReqDto }>,
+    ): Promise<GetObjectResDto> {
+        const { params } = request;
+
+        const trimmedBucketName: string = params.name.trim();
+        const trimmedObjectKey: string = params.key.trim();
+
+        let getObjectResponse: GetObjectResponse = null;
+
+        try {
+            getObjectResponse = await this.cloudflareRequestClient.getObject(
+                trimmedBucketName,
+                trimmedObjectKey,
+            );
+        } catch (error) {
+            request.log.error(
+                { error },
+                'Cloudflare service - getObject - getObject',
+            );
+            throw new ProcessFailureError();
+        }
+
+        const getObjectResDto: GetObjectResDto = {
+            body: getObjectResponse.responseBody,
+            contentType: getObjectResponse.contentType,
+        };
+
+        return getObjectResDto;
     }
 }

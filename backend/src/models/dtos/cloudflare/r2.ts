@@ -1,3 +1,5 @@
+import { CONTENT_TYPES } from '../../../constants/enums';
+
 export class R2Response<T> {
     errors: R2Error[];
     messages: string[];
@@ -64,4 +66,9 @@ export class ListObjectsResponse {
 
 export class DeleteObjectResponse {
     key: string;
+}
+
+export class GetObjectResponse {
+    responseBody: unknown;
+    contentType: CONTENT_TYPES;
 }

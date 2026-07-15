@@ -2,17 +2,19 @@ import configuration, {
     CloudflareConfig,
 } from '../configuration/configuration';
 import { CLOUDFLARE_R2_ENDPOINTS } from '../constants/cloudflare';
-import { CONTENT_TYPES } from '../constants/enums';
+import { CONTENT_TYPES, HTTP_HEADERS, HTTP_METHODS } from '../constants/enums';
 import { R2Client } from '../infrastructure/r2';
 import {
     CreateBucketRequest,
     CreateBucketResponse,
     DeleteBucketResponse,
     DeleteObjectResponse,
+    GetObjectResponse,
     ListBucketsResponse,
     ListObjectsResponse,
     R2Response,
 } from '../models/dtos/cloudflare/r2';
+import { parseResponseBody } from '../utils/http';
 
 export class CloudflareRequestClient {
     private readonly r2Client: R2Client;
@@ -144,5 +146,43 @@ export class CloudflareRequestClient {
         }
 
         return undefined;
+    }
+
+    async getObject(
+        bucketName: string,
+        objectKey: string,
+    ): Promise<GetObjectResponse> {
+        const workerBaseUrl = this.cloudflareConfig.workerBaseUrl;
+        const url = new URL(workerBaseUrl);
+        url.searchParams.append('bucketName', bucketName);
+        url.searchParams.append('objectKey', objectKey);
+
+        const response: Response = await fetch(url.toString(), {
+            method: HTTP_METHODS.GET,
+            headers: {
+                [HTTP_HEADERS.X_API_KEY]: this.cloudflareConfig.workerApiKey,
+            },
+        });
+
+        if (!response.ok) {
+            const errorResponse = await response.json();
+            throw errorResponse;
+        }
+
+        const contentType: CONTENT_TYPES = response.headers.get(
+            HTTP_HEADERS.CONTENT_TYPE,
+        ) as CONTENT_TYPES;
+
+        const responseBody: unknown = await parseResponseBody(
+            response,
+            contentType,
+        );
+
+        const getObjectResponse: GetObjectResponse = {
+            responseBody,
+            contentType,
+        };
+
+        return getObjectResponse;
     }
 }

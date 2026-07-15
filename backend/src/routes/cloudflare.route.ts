@@ -1,4 +1,9 @@
-import { FastifyInstance, FastifyPluginAsync, FastifyRequest } from 'fastify';
+import {
+    FastifyInstance,
+    FastifyPluginAsync,
+    FastifyReply,
+    FastifyRequest,
+} from 'fastify';
 import { CloudflareController } from '../controllers/cloudflare.controller';
 import {
     CreateBucketResDto,
@@ -9,10 +14,12 @@ import { APP_ROUTES } from '../constants/routes';
 import {
     CreateBucketReqDto,
     DeleteObjectReqDto,
+    GetObjectReqDto,
     ListObjectsReqDto,
     RemoveBucketReqDto,
     UploadObjectReqDto,
 } from '../models/dtos/project/req/cloudflare';
+import { CONTENT_TYPES } from '../constants/enums';
 
 export const CloudflareRoutes: FastifyPluginAsync = async (
     fastify: FastifyInstance,
@@ -73,5 +80,21 @@ export const CloudflareRoutes: FastifyPluginAsync = async (
         async (
             request: FastifyRequest<{ Params: UploadObjectReqDto }>,
         ): Promise<void> => cloudflareController.uploadObject(request),
+    );
+
+    fastify.get(
+        APP_ROUTES.cloudflare.getObject.endpoint,
+        {
+            schema: APP_ROUTES.cloudflare.getObject.requestDtoSchema,
+        },
+        async (
+            request: FastifyRequest<{ Params: GetObjectReqDto }>,
+            reply: FastifyReply,
+        ): Promise<void> => {
+            const response = await cloudflareController.getObject(request);
+            return reply
+                .type(CONTENT_TYPES.APPLICATION_OCTET_STREAM)
+                .send(response.body);
+        },
     );
 };

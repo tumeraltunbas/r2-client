@@ -18,3 +18,8 @@ export class DeleteObjectReqDto {
 export class UploadObjectReqDto {
     name: string;
 }
+
+export class GetObjectReqDto {
+    name: string;
+    key: string;
+}

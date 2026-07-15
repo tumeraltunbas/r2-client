@@ -12,6 +12,8 @@ export default (): Configuration => ({
         apiToken: process.env.CLOUDFLARE_API_TOKEN,
         apiUrl: 'https://api.cloudflare.com/client',
         apiVersion: 'v4',
+        workerBaseUrl: process.env.CLOUDFLARE_WORKER_BASE_URL,
+        workerApiKey: process.env.CLOUDFLARE_WORKER_API_KEY,
     },
     formData: {
         maxFileSize: convertMegabytesToBytes(300),
@@ -35,6 +37,8 @@ export interface CloudflareConfig {
     apiToken: string;
     apiUrl: string;
     apiVersion: string;
+    workerBaseUrl: string;
+    workerApiKey: string;
 }
 
 export interface FormDataConfig {
