@@ -20,12 +20,16 @@ export default (): Configuration => ({
         maxFileCount: 1,
         fieldName: 'file',
     },
+    baseUrl: {
+        clientBaseUrl: process.env.CLIENT_BASE_URL,
+    },
 });
 
 interface Configuration {
     application: ApplicationConfig;
     cloudflare: CloudflareConfig;
     formData: FormDataConfig;
+    baseUrl: BaseUrlConfig;
 }
 
 export interface ApplicationConfig {
@@ -45,4 +49,8 @@ export interface FormDataConfig {
     maxFileSize: number;
     maxFileCount: number;
     fieldName: string;
+}
+
+export interface BaseUrlConfig {
+    clientBaseUrl: string;
 }
